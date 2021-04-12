@@ -16,13 +16,21 @@ class TrySFTPCubit extends Cubit<TrySFTPState> {
   Future<void> tryConnection(String ip, String username, String password, String path) async {
     try {
       emit(TrySFTPState.pending);
-      await _sftpRepository.tryConnection(Parameter(
+
+      final params = Parameter(
         ip: ip,
         username: username,
         password: password,
         directory: path,
-      ));
-      emit(TrySFTPState.success);
+      );
+
+      final bool success = await _sftpRepository.tryConnection(params);
+
+      if (success) {
+        emit(TrySFTPSuccess(params));
+      } else {
+        emit(const TrySFTPFailed('failed'));
+      }
     } catch (e) {
       print(e);
       emit(TrySFTPFailed(e.toString()));

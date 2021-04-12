@@ -15,9 +15,9 @@ class DirectoriesComponent extends StatelessWidget {
         final goodDir = appFiles.substring(0, cut);
         print(goodDir);
 
-        File f = File("$goodDir/Hello/image.png");
-        print(f.path);
-        print(f.lastModified());
+        // File f = File("$goodDir/Hello/image.png");
+        // print(f.path);
+        // print(f.lastModified());
 
         return [
           appFiles,

@@ -5,7 +5,6 @@ abstract class TrySFTPState extends Equatable {
 
   static const initial = TrySFTPInitial();
   static const pending = TrySFTPPending();
-  static const success = TrySFTPSuccess();
 
   @override
   List<Object> get props => [];
@@ -20,7 +19,9 @@ class TrySFTPPending extends TrySFTPState {
 }
 
 class TrySFTPSuccess extends TrySFTPState {
-  const TrySFTPSuccess();
+  const TrySFTPSuccess(this.parameter);
+
+  final Parameter parameter;
 }
 
 class TrySFTPFailed extends TrySFTPState {

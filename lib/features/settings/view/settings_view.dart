@@ -1,8 +1,10 @@
+import 'package:backtome/features/sftp/sftp.dart';
 import 'package:backtome/resources/resources.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
 import 'package:backtome/features/settings/settings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);

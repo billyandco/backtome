@@ -1,8 +1,9 @@
-import 'package:backtome/features/sftp/sftp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:backtome/helpers/helpers.dart';
 import 'package:backtome/features/sftp/repository/repository.dart';
+import 'package:backtome/features/sftp/sftp.dart';
 import 'package:backtome/resources/resources.dart';
 
 class SFTPView extends StatelessWidget {
@@ -12,14 +13,11 @@ class SFTPView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<SFTPRepository>(
-      create: (_) => const SFTPRepository(),
-      child: BlocProvider<TrySFTPCubit>(
-        create: (context) => TrySFTPCubit(
-          sftpRepository: context.read<SFTPRepository>(),
-        ),
-        child: const _SFTPView(),
+    return BlocProvider<TrySFTPCubit>(
+      create: (context) => TrySFTPCubit(
+        sftpRepository: context.read<SFTPRepository>(),
       ),
+      child: const _SFTPView(),
     );
   }
 }
@@ -40,7 +38,21 @@ class _SFTPViewState extends State<_SFTPView> {
   @override
   void initState() {
     super.initState();
-    // TODO get from box
+    final params = BlocProvider.of<SFTPSettingsCubit>(context).state;
+    tfIp.text = params.ip;
+    tfUsername.text = params.username;
+    tfPassword.text = params.password;
+    tfPath.text = params.directory;
+  }
+
+  void onDone(BuildContext context) {
+    closeKeyboard(context);
+    BlocProvider.of<TrySFTPCubit>(context).tryConnection(
+      tfIp.text.trim(),
+      tfUsername.text.trim(),
+      tfPassword.text.trim(),
+      tfPath.text.trim(),
+    );
   }
 
   @override
@@ -54,24 +66,18 @@ class _SFTPViewState extends State<_SFTPView> {
         ),
         title: const Text('Super Fine Tall Person'),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.run_circle),
-        label: const Text("Let's run it !"),
-        onPressed: () {
-          BlocProvider.of<TrySFTPCubit>(context).tryConnection(
-            tfIp.text.trim(),
-            tfUsername.text.trim(),
-            tfPassword.text.trim(),
-            tfPath.text.trim(),
-          );
-        },
+      floatingActionButton: TrySFTPFloatingButton(
+        onTap: onDone,
       ),
       body: SafeArea(
         child: BlocListener<TrySFTPCubit, TrySFTPState>(
           listener: (context, state) {
+            print(state.runtimeType);
             if (state is TrySFTPSuccess) {
-              // TODO success message
+              BlocProvider.of<SFTPSettingsCubit>(context).save(state.parameter);
+              print('Success !');
             } else if (state is TrySFTPFailed) {
+              print('Failed : ${state.message}');
               // TODO failed message
             }
           },
@@ -103,7 +109,7 @@ class _SFTPViewState extends State<_SFTPView> {
                 obscureText: true,
                 decoration: const InputDecoration(
                   labelText: 'Password',
-                  hintText: 'You shall "mot de passe"',
+                  hintText: 'You shall "mot de passe" !!!',
                 ),
               ),
               const SizedBox(height: BMSizes.large),
@@ -113,6 +119,7 @@ class _SFTPViewState extends State<_SFTPView> {
                   labelText: 'Backup directory',
                   hintText: 'I will "file" you',
                 ),
+                onSubmitted: (_) => onDone(context),
               ),
               const SizedBox(height: BMSizes.large),
               const Text(
@@ -123,6 +130,56 @@ class _SFTPViewState extends State<_SFTPView> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class TrySFTPFloatingButton extends StatelessWidget {
+  const TrySFTPFloatingButton({Key? key, required this.onTap}) : super(key: key);
+
+  final void Function(BuildContext) onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    const loadingWidget = SizedBox(
+      width: BMSizes.large,
+      height: BMSizes.large,
+      child: CircularProgressIndicator(
+        strokeWidth: 2,
+        valueColor: AlwaysStoppedAnimation(Colors.white),
+      ),
+    );
+
+    return BlocBuilder<TrySFTPCubit, TrySFTPState>(
+      builder: (context, state) {
+        final isLoading = state is TrySFTPPending;
+
+        Color? color;
+        Text text = const Text("Let's run it !");
+        Icon icon = const Icon(Icons.run_circle);
+
+        if (state is TrySFTPSuccess) {
+          color = Colors.green;
+          text = const Text("Success !");
+          icon = const Icon(Icons.check);
+        } else if (state is TrySFTPFailed) {
+          color = Colors.redAccent;
+          text = const Text("What's wrong ?");
+          icon = const Icon(Icons.healing_outlined);
+        }
+
+        return FloatingActionButton.extended(
+          icon: isLoading ? loadingWidget : icon,
+          label: text,
+          isExtended: !isLoading,
+          backgroundColor: color,
+          onPressed: () {
+            if (!isLoading) {
+              onTap(context);
+            }
+          },
+        );
+      },
     );
   }
 }

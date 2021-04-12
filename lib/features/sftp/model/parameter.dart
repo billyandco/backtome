@@ -15,6 +15,13 @@ class Parameter extends Equatable {
   final String password;
   final String directory;
 
+  static const empty = Parameter(
+    ip: '',
+    username: '',
+    password: '',
+    directory: '',
+  );
+
   h.Settings toHive() => h.Settings(
         ip: ip,
         username: username,
