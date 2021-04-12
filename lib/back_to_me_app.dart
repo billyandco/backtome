@@ -39,6 +39,11 @@ class _BackToMeAppState extends State<BackToMeApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        textTheme: const TextTheme(
+          bodyText2: TextStyle(
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(BMSizes.small),

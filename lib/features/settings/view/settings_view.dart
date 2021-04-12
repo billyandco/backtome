@@ -1,3 +1,4 @@
+import 'package:backtome/resources/resources.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -20,13 +21,13 @@ class SettingsView extends StatelessWidget {
         title: const Text('Where you set things'),
       ),
       body: ListView(
+        padding: const EdgeInsets.all(BMSizes.large),
         children: const [
-          // TODO Permissions Component
-          Text('Permissions'),
-          // TODO SFTP Component
+          PermissionsComponent(),
+          SizedBox(height: BMSizes.large),
           SFTPComponent(),
-          // TODO Directoties Component
-          Text('Directoties'),
+          SizedBox(height: BMSizes.large),
+          DirectoriesComponent(),
         ],
       ),
     );

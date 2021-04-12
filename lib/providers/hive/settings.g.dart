@@ -22,15 +22,14 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       username: fields[2] as String?,
       password: fields[3] as String?,
       directory: fields[4] as String?,
-      ssid: fields[5] as String?,
-      directories: (fields[6] as List).cast<String>(),
+      directories: (fields[5] as List).cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Settings obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.ip)
       ..writeByte(1)
@@ -42,8 +41,6 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       ..writeByte(4)
       ..write(obj.directory)
       ..writeByte(5)
-      ..write(obj.ssid)
-      ..writeByte(6)
       ..write(obj.directories);
   }
 

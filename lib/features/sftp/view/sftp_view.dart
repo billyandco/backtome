@@ -1,4 +1,3 @@
-import 'package:backtome/features/sftp/model/model.dart';
 import 'package:backtome/features/sftp/sftp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
