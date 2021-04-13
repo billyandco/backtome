@@ -32,7 +32,6 @@ class TrySFTPCubit extends Cubit<TrySFTPState> {
         emit(const TrySFTPFailed('failed'));
       }
     } catch (e) {
-      print(e);
       emit(TrySFTPFailed(e.toString()));
     }
   }

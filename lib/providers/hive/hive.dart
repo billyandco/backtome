@@ -1,9 +1,9 @@
 export 'settings.dart';
 
-enum LocalHiveBox {
-  settings,
+abstract class LocalHiveBox {
+  static const String settings = "settings";
 }
 
-enum LocalHiveKey {
-  settings,
+abstract class LocalHiveKey {
+  static const String settings = "settings";
 }

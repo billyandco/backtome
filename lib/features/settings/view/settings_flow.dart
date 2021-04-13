@@ -1,3 +1,4 @@
+import 'package:backtome/features/directory/directory.dart';
 import 'package:backtome/features/settings/settings.dart';
 import 'package:backtome/features/sftp/sftp.dart';
 import 'package:flow_builder/flow_builder.dart';
@@ -18,13 +19,16 @@ class SettingsFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<SFTPRepository>(
-      create: (_) => const SFTPRepository(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<SFTPRepository>(create: (_) => const SFTPRepository()),
+        RepositoryProvider<SettingsRepository>(create: (_) => const SettingsRepository()),
+      ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<SFTPSettingsCubit>(
-            create: (context) => SFTPSettingsCubit(
-              sftpRepository: context.read<SFTPRepository>(),
+          BlocProvider<SettingsCubit>(
+            create: (context) => SettingsCubit(
+              settingsRepository: context.read<SettingsRepository>(),
             ),
           ),
         ],
@@ -47,8 +51,8 @@ class _SettingsFlow extends StatelessWidget {
           //   return [...pages, PermissionsView.page()];
           case SettingsFlowState.sftp:
             return [...pages, SFTPView.page()];
-          // case SettingsFlowState.directories:
-          //   return [...pages, DirectoriesView.page()];
+          case SettingsFlowState.directories:
+            return [...pages, DirectoriesView.page()];
           case SettingsFlowState.settings:
           default:
             return [SettingsView.page()];

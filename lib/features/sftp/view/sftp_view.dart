@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:backtome/helpers/helpers.dart';
-import 'package:backtome/features/sftp/repository/repository.dart';
+import 'package:backtome/features/settings/settings.dart';
 import 'package:backtome/features/sftp/sftp.dart';
 import 'package:backtome/resources/resources.dart';
 
@@ -38,11 +38,11 @@ class _SFTPViewState extends State<_SFTPView> {
   @override
   void initState() {
     super.initState();
-    final params = BlocProvider.of<SFTPSettingsCubit>(context).state;
-    tfIp.text = params.ip;
-    tfUsername.text = params.username;
-    tfPassword.text = params.password;
-    tfPath.text = params.directory;
+    final settings = BlocProvider.of<SettingsCubit>(context).state;
+    tfIp.text = settings.ip;
+    tfUsername.text = settings.username;
+    tfPassword.text = settings.password;
+    tfPath.text = settings.directory;
   }
 
   void onDone(BuildContext context) {
@@ -65,6 +65,14 @@ class _SFTPViewState extends State<_SFTPView> {
           onPressed: Navigator.of(context).pop,
         ),
         title: const Text('Super Fine Tall Person'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.upload_file),
+            onPressed: () {
+              SFTPRepository.uploadTest();
+            },
+          ),
+        ],
       ),
       floatingActionButton: TrySFTPFloatingButton(
         onTap: onDone,
@@ -72,13 +80,10 @@ class _SFTPViewState extends State<_SFTPView> {
       body: SafeArea(
         child: BlocListener<TrySFTPCubit, TrySFTPState>(
           listener: (context, state) {
-            print(state.runtimeType);
             if (state is TrySFTPSuccess) {
-              BlocProvider.of<SFTPSettingsCubit>(context).save(state.parameter);
-              print('Success !');
+              BlocProvider.of<SettingsCubit>(context).saveSFTP(state.parameter);
             } else if (state is TrySFTPFailed) {
               print('Failed : ${state.message}');
-              // TODO failed message
             }
           },
           child: ListView(

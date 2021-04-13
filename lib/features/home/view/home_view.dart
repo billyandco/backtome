@@ -9,9 +9,10 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('BackToMe'),
+        centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.storage_outlined),
+            icon: const Icon(Icons.sports_bar_outlined),
             onPressed: () {
               Navigator.of(context).push<void>(SettingsFlow.route());
             },

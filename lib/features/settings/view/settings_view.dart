@@ -1,10 +1,8 @@
-import 'package:backtome/features/sftp/sftp.dart';
-import 'package:backtome/resources/resources.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
 import 'package:backtome/features/settings/settings.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:backtome/resources/resources.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
@@ -23,12 +21,10 @@ class SettingsView extends StatelessWidget {
         title: const Text('Where you set things'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(BMSizes.large),
+        padding: const EdgeInsets.symmetric(horizontal: BMSizes.large),
         children: const [
           PermissionsComponent(),
-          SizedBox(height: BMSizes.large),
           SFTPComponent(),
-          SizedBox(height: BMSizes.large),
           DirectoriesComponent(),
         ],
       ),

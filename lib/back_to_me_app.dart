@@ -41,6 +41,7 @@ class _BackToMeAppState extends State<BackToMeApp> {
       theme: ThemeData(
         textTheme: const TextTheme(
           bodyText2: TextStyle(
+            fontSize: BMSizes.large,
             fontWeight: FontWeight.w400,
           ),
         ),
