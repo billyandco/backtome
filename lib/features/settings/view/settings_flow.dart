@@ -1,9 +1,10 @@
-import 'package:backtome/features/directory/directory.dart';
-import 'package:backtome/features/settings/settings.dart';
-import 'package:backtome/features/sftp/sftp.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:backtome/features/directory/directory.dart';
+import 'package:backtome/features/settings/settings.dart';
+import 'package:backtome/features/sftp/sftp.dart';
 
 enum SettingsFlowState {
   settings,
@@ -19,21 +20,11 @@ class SettingsFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider<SFTPRepository>(create: (_) => const SFTPRepository()),
-        RepositoryProvider<SettingsRepository>(create: (_) => const SettingsRepository()),
-      ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<SettingsCubit>(
-            create: (context) => SettingsCubit(
-              settingsRepository: context.read<SettingsRepository>(),
-            ),
-          ),
-        ],
-        child: const _SettingsFlow(),
+    return BlocProvider<SettingsCubit>(
+      create: (context) => SettingsCubit(
+        settingsRepository: context.read<SettingsRepository>(),
       ),
+      child: const _SettingsFlow(),
     );
   }
 }

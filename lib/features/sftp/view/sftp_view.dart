@@ -65,14 +65,6 @@ class _SFTPViewState extends State<_SFTPView> {
           onPressed: Navigator.of(context).pop,
         ),
         title: const Text('Super Fine Tall Person'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.upload_file),
-            onPressed: () {
-              SFTPRepository.uploadTest();
-            },
-          ),
-        ],
       ),
       floatingActionButton: TrySFTPFloatingButton(
         onTap: onDone,

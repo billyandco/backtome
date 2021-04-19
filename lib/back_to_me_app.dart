@@ -39,9 +39,13 @@ class _BackToMeAppState extends State<BackToMeApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        // backgroundColor: BMColors.blue2,
+        // accentColor: BMColors.blue2,
+        // scaffoldBackgroundColor: BMColors.blue2,
         textTheme: const TextTheme(
           bodyText2: TextStyle(
             fontSize: BMSizes.large,
+            // color: BMColors.blue8,
             fontWeight: FontWeight.w400,
           ),
         ),
