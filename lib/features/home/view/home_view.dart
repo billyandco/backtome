@@ -9,22 +9,6 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider<SFTPRepository>(create: (_) => const SFTPRepository()),
-        RepositoryProvider<SettingsRepository>(create: (_) => const SettingsRepository()),
-      ],
-      // child: MultiBlocProvider(providers: []),
-      child: const _HomeView(),
-    );
-  }
-}
-
-class _HomeView extends StatelessWidget {
-  const _HomeView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('BackToMe'),
@@ -38,9 +22,14 @@ class _HomeView extends StatelessWidget {
           ),
         ],
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Center(
-          child: Text('Home'),
+          child: InkWell(
+            onTap: () {
+              SFTPRepository.uploadTest();
+            },
+            child: Text('Home'),
+          ),
         ),
       ),
     );

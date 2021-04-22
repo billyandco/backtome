@@ -35,12 +35,7 @@ class SFTPRepository {
       await client.connectSFTP();
 
       final ls = await client.sftpLs(params.directory);
-
-      if (ls != null) {
-        return true;
-      }
-
-      return false;
+      return ls != null;
     } catch (e) {
       rethrow;
     } finally {
